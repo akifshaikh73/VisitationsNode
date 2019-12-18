@@ -10,5 +10,5 @@ app.get('/',function(req,res){
 
 app.listen(3000,function() {
     //console.log('listening on '+ chalk.green('3000'));
-    debug(`listening on port ${chalk.green('3000')}`);
+    debug(`listening on port ${chalk.green('8080')}`);
 });
