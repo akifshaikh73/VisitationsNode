@@ -1,0 +1,1 @@
+aws dynamodb query --table-name visitations_data  --index-name areaIndex --key-condition-expression "#unit = :unit AND #area = :area"  --expression-attribute-names "{ \"#unit\": \"unit\", \"#area\": \"area\"  }"    --expression-attribute-values "{ \":unit\": {\"S\":\"1\"}, \":area\": {\"S\":\"Foxworth\"}  }"  --output yaml

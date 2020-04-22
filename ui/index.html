@@ -1,0 +1,77 @@
+<html>
+    <head>
+        <title> Visitations </title>
+            <script type="text/javascript" src="Scripts/jquery-3.3.1.js"></script>
+            <script type="text/javascript" src="scripts/jquery.tmpl.min.js"></script>
+            <script src="app.js"></script>
+            <script>
+                var MU_1 = {
+                    masjid : "Masjid Uthman",
+                    unit : "1",
+                    areas : ["Downers Grove","Apex","Westmont"]
+                }
+                var MU_2 = {
+                    masjid : "Masjid Uthman",
+                    unit : "2",
+                    areas : ["area2","area2b","area 2c"]
+                }
+                var MU_3 = {
+                    masjid : "Masjid Uthman",
+                    unit : "3",
+                    areas : ["area 3","area 3b","area 3c"]
+                }
+                var DS_1 = {
+                    masjid : "DarusSalaam",
+                    unit : "1",
+                    areas : ["area1b","area 1c"]
+                }
+                var DS_2 = {
+                    masjid : "DarusSalaam",
+                    unit : "2",
+                    areas : ["ds area 2","ds area 2c"]
+                }
+                var IFS_1 = {
+                    masjid : "IFS",
+                    unit : "IF1",
+                    areas : ["area1b","area 1c"]
+                }
+                var allMasjids = [MU_1,MU_2,MU_3,DS_1,DS_2,IFS_1]    ;
+
+            </script>    
+    </head>
+
+    <body>
+        <h1>Visitations</h1>
+        
+        <a href="#">Home</a>
+        <a href="#masjids">Masjids</a>
+        <a href="#units">Units</a>
+        <hr/>
+        <div id="visitation">
+        </div>
+        <div id="masjids">
+            <h2>Masjids</h2>
+            <ul id="masjid_list">
+            </ul>    
+        </div>
+
+        <div id="units">
+            <h2>Units</h2>
+            <ul id="unit_list">
+            </ul>    
+        </div>
+        
+        <div id="areas">
+            <h2>Areas</h2>
+            <ul id="area_list">
+            </ul>    
+        </div>
+        <hr/>
+        <div id="areas">
+            <h2>Visitations</h2>
+            <ul id="area_list">
+            </ul>    
+        </div>
+
+</body>
+</html>

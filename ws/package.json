@@ -1,0 +1,16 @@
+{
+  "name": "refdata",
+  "version": "1.0.0",
+  "description": "Reference Data API",
+  "main": "visitation_metadata_ws.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Akif",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.635.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  }
+}
