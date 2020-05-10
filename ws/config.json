@@ -1,6 +1,6 @@
 { 
-    "accessKeyId": "dduser"
-    "secretAccessKey": "dduser"
+    "accessKeyId": "dduser",
+    "secretAccessKey": "dduser",
     "region": "us-east-2" 
 }
 
