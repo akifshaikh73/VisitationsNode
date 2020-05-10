@@ -1,15 +1,19 @@
 var visitation = $('#visitation');
 var masjid_list = $('#masjid_list');
+var allMasjids = []    ;
+
+var hostname=location.hostname;
+const wsport = 8081;
+console.log("hostnam"+hostname);
 
 $(document).ready(
     ()=> {
         $.ajax({
-            "url": "http://localhost:8080/visitations/metadata/",
+            "url": "http://"+hostname+":"+wsport+"/visitations/metadata/",
             "type": "get",
             "dataType": "json",
             "success":response=>{
                 console.log(response);
-                //allMasjids = JSON.parse(response);
                 allMasjids = response;
             },
             "error":error => {
@@ -45,10 +49,10 @@ function showMasjids(filter) {
     $('#masjid_list').html('');
     allMasjids.forEach(masjid => {
         if(filter == null)
-            $("<ul><a href=#units?masjid="+encodeURI(masjid.masjid)+">"+masjid.masjid+",unit="+masjid.unit+"</a></ul>").appendTo("#masjid_list");
+            $("<ul><a href=#units?masjid="+encodeURI(masjid.masjid)+">"+masjid.masjid+"</a></ul>").appendTo("#masjid_list");
         else
             if(masjid.masjid == filter)
-                $("<ul><a href=#units?masjid="+encodeURI(masjid.masjid)+">"+masjid.masjid+",unit="+masjid.unit+"</a></ul>").appendTo("#masjid_list");
+                $("<ul><a href=#units?masjid="+encodeURI(masjid.masjid)+">"+masjid.masjid+"</a></ul>").appendTo("#masjid_list");
 
     });
 }
@@ -59,31 +63,60 @@ function showUnits(masjidfilter) {
     $("#areas").hide();
     $("#unit_list").html(``);
     if(masjidfilter == null)
-        masjidfilter='Masjid Uthman';
-    allMasjids.forEach(masjid => {
-        if(masjid.masjid == decodeURI(masjidfilter))
-            $("<ul><a href=#areas?unit="+masjidfilter+":"+masjid.unit+">"+masjid.masjid+"_"+masjid.unit+"</a></ul>").appendTo("#unit_list");
+        masjidfilter=encodeURI('Masjid Uthman');
+    console.log(masjidfilter);
+    var masjid = allMasjids.filter(m => m.masjid == decodeURI(masjidfilter));
+    console.log(masjid);
+    masjid[0].units.forEach(unit=>{
+        $("<ul><a href=#areas?unit="+(masjidfilter)+":"+encodeURI(unit.name)+">"+masjid[0].masjid+"_"+unit.name+"</a></ul>").appendTo("#unit_list");
     });
 
 }
 function showAreas(filter) {
     var words = filter.split(":");
-    const masjidfilter= words[0];
-    const unitfilter=words[1];
+    const masjidfilter= decodeURI(words[0]);
+    const unitfilter=decodeURI(words[1]);
     $("#masjids").hide();
     $("#units").hide();
     $("#areas").show();
     $("#area_list").html(``);
-    allMasjids.forEach(masjid => {
-        if(masjid.masjid == decodeURI(masjidfilter) && masjid.unit == unitfilter) {
-            masjid.areas.forEach(area => {
-                $("<ul><a href=#visitations?area="+encodeURI(area)+">"+decodeURI(masjidfilter)+":"+unitfilter+":"+area+"</a></ul>").appendTo("#area_list");
-            });
+    
+    var masjid = allMasjids.filter(masjid =>  masjid.masjid == masjidfilter);
+    var unit = masjid[0].units.filter(unit => unit.name == unitfilter);
+    unit[0].areas.forEach(area => {
+        $("<ul><a href=#visitations?area="+encodeURI(masjidfilter)+":"+encodeURI(unitfilter)+":"+encodeURI(area)+">"+masjidfilter+":"+unitfilter+":"+area+"</a></ul>").appendTo("#area_list");
+    });
+}
 
+function showVisitations(filter) {
+    var words = filter.split(":");
+    const masjidfilter= decodeURI(words[0]);
+    const unitfilter=decodeURI(words[1]);
+    const areafilter=decodeURI(words[2]);
+    var visitations = [];
+    $("#masjids").hide();
+    $("#units").hide();
+    $("#areas").show();
+    $.ajax({
+        "url": "http://"+hostname+":"+wsport+"/visitations/masjid/"+masjidfilter+"/unit/"+unitfilter+"/area/"+areafilter,
+
+        "type": "get",
+        "dataType": "json",
+        "success":response=>{
+            console.log(response);
+            visitations = response;
+            $("#master_list tr").remove(); 
+            visitations.forEach(entry => {
+                $("<tr><td>"+entry.FirstName+"</td><td>"+entry.Address+"</td>"+"</tr>").appendTo("#master_list");
+            });
+        },
+        "error":error => {
+            console.log(error);
         }
     });
 
 }
+
 
 function pageNotFound() {
     visitation.html( `<b> Couldn't find the page </b>`);
@@ -112,6 +145,9 @@ function router(hash) {
             break;
         case '#areas':
             showAreas(query);
+            break;
+        case '#visitations':
+            showVisitations(query);
             break;
         case '':
             showLandingPage();
