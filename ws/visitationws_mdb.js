@@ -20,6 +20,12 @@ function title(letters) {
     return letters.charAt(0).toUpperCase() + letters.slice(1);
 }
 
+app.use(cors());
+
+app.get("/health", (req,res)=>{
+    res.send("OK");
+});
+
 app.get("/visitations/unit/:unit",(req,res)=>{
     var unit = req.params.unit;
     console.log(unit);

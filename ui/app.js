@@ -4,7 +4,6 @@ var allMasjids = []    ;
 
 var hostname=location.hostname;
 const wsport = 8081;
-console.log("hostnam"+hostname);
 
 $(document).ready(
     ()=> {
